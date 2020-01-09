@@ -28,11 +28,11 @@ server.on('message', (msg) => {
 
 const connectionEpic$ = of(null).pipe(
   switchMap(() => {
-    console.log('Enter server port:');
+    console.log('Enter server port (empty for 4228):');
     return createStdInObservable().pipe(
-      switchMap(() => {
+      switchMap((input) => {
         // Try to connect to server, send ping
-        server.send(JSON.stringify({ message: 'ping' }), 4228, 'localhost', console.log);
+        server.send(JSON.stringify({ message: 'ping' }), input || 4228, 'localhost', console.log);
         // Then wait for pong
         return pong$.pipe(
           map(({ data }) => data),
